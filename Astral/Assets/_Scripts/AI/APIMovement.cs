@@ -13,7 +13,10 @@ public class APIMovement : MonoBehaviour {
 		return tempArr;
 	}
 
-
+	/*
+	 *	The Different Movement methods
+	 *
+	**/
 	public void movement_SimpleGround(Transform enemTrans, ref Vector3 speed, float[] limits)
 	{
 		if(enemTrans.position.x >= limits[1] || enemTrans.position.x <= limits[0])
@@ -29,6 +32,15 @@ public class APIMovement : MonoBehaviour {
 		//TODO Use limits to say if player is far enough away from the original point, make enemy go back
 	}
 
+	/* 
+	 * End of Movement methods
+	 *
+	**/
+
+	/*
+	 *	The Different Detection methods
+	 *
+	**/
 	public void simpleDetection(Transform enemTrans, Vector3 speed, GameObject player, ref bool playerLost, 
 										ref float elapsedTime, ref bool playerDetected)
 	{
@@ -46,25 +58,26 @@ public class APIMovement : MonoBehaviour {
 		}
 		else
 		{
-			switch(enemTrans.name.Split('_')[0])
+			print("Api detect");
+			switch(enemTrans.name.Split('_')[1])
 			{
 			case "SimpleGround":
-				actOnDetection_SimpleGround(enemTrans, speed, player);
+				actOnDetection_SimpleGround(enemTrans, player);
 				break;
 			case "SimpleAir":
-				actOnDetection_SimpleAir(enemTrans, speed, player);
+				actOnDetection_SimpleAir(enemTrans, player);
 				break;
 			default:
 				break;
 			}
 		}
 	}
-	public void actOnDetection_SimpleGround(Transform enemTrans, Vector3 speed, GameObject player)
+	public void actOnDetection_SimpleGround(Transform enemTrans, GameObject player)
 	{
 		Vector3 playerPos;
 
 		// TODO Hate lerp for this, change when you can
-		if(speed.x < 0)
+		if(player.transform.position.x < enemTrans.position.x)
 		{
 			playerPos = new Vector3(player.transform.position.x + 2.5f, enemTrans.position.y, enemTrans.position.z);
 		}
@@ -76,9 +89,25 @@ public class APIMovement : MonoBehaviour {
 		enemTrans.position = Vector3.Lerp(enemTrans.position, playerPos, Time.deltaTime);
 	}
 
-	public void actOnDetection_SimpleAir(Transform enemTrans, Vector3 speed, GameObject player)
+	public void actOnDetection_SimpleAir(Transform enemTrans, GameObject player)
 	{
-		//TODO Change this from ground detection to air detection
+		Vector3 playerPos;
+
+		if(player.transform.position.x < enemTrans.position.x)
+		{
+			playerPos = new Vector3(player.transform.position.x + 3.5f, player.transform.position.y + 3.5f, enemTrans.position.z);
+		}
+		else
+		{
+			playerPos = new Vector3(player.transform.position.x - 3.5f, player.transform.position.y + 3.5f, enemTrans.position.z);
+		}
+
+		enemTrans.position = Vector3.Lerp(enemTrans.position, playerPos, Time.deltaTime);
 	}
+
+	/* 
+	 * End of Movement methods
+	 *
+	**/
 
 }
