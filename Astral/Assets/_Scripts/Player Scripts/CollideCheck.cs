@@ -4,8 +4,14 @@ using System.Collections;
 public class CollideCheck : MonoBehaviour {
 
 	// Change this in the Inspector to check for collision
-	public string collisionToDetect = "";
+	public string collisionToDetect = "grapple";
 	public string performTask = "";
+	GrappleMechanic grappleMech;
+
+	void Awake()
+	{
+		grappleMech = GameObject.FindGameObjectWithTag("Player").GetComponent<GrappleMechanic>();
+	}
 
 	public void OnCollisionEnter2D(Collision2D coll)
 	{
@@ -25,10 +31,12 @@ public class CollideCheck : MonoBehaviour {
 
 	public void handle_GrappleTask(Collision2D coll)
 	{
-		GrappleMechanic grappleMech = GameObject.FindGameObjectWithTag("Player").GetComponent<GrappleMechanic>();
-
-		grappleMech.grappling = false;
-		grappleMech.grappleSuccessful = true;
-		grappleMech.targetPos = coll.contacts[0].point;
+		if(grappleMech.grappling)
+		{
+			grappleMech.grappling = false;
+			grappleMech.grappleSuccessful = true;
+			grappleMech.targetPos = coll.contacts[0].point;
+			grappleMech.grappleGun.SetParent(grappleMech.tempParent.transform);
+		}
 	}
 }

@@ -15,6 +15,9 @@ public class GrappleMechanic : MonoBehaviour {
 
 	public bool grappleSuccessful;
 
+	public GameObject parent;
+	public GameObject tempParent;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -93,7 +96,13 @@ public class GrappleMechanic : MonoBehaviour {
 		if(grappleSuccessful)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, grappleGun.position, timeToTake);
-			grappleGun.position = targetPos;
+			//grappleGun.position = targetPos;
 		}
+
+		if(!grappling && !grappleSuccessful)
+		{
+			grappleGun.position = Vector2.MoveTowards(grappleGun.position, initialPosGun.position, timeToTake);
+		}
+
 	}
 }

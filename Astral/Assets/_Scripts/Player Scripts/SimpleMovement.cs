@@ -53,5 +53,14 @@ public class SimpleMovement : MonoBehaviour
 
     }
 
-   
+    /*
+     * NOT SURE IF THIS IS THE BEST WAY TO HANDLE...
+    */
+    public void OnCollisionEnter2D(Collision2D col)
+    {
+    	print("Collided");
+    	this.GetComponent<GrappleMechanic>().grappleSuccessful = false;
+    	this.GetComponent<GrappleMechanic>().grappleGun.SetParent(this.GetComponent<GrappleMechanic>().parent.transform);
+    }
+
 }
